@@ -32,14 +32,14 @@ function categoryRoutes(server, app) {
     }
   })
   
-  server.get('/api/categories', (req, res) => {
+  server.get('/api/categories', function(req, res) {
     Category.find(function (err, result) {
       if (err) res.status(400).send(err);
       res.status(200).send(result);
     })
   })
 
-  server.get('/api/category/:id', (req, res) => {
+  server.get('/api/category/:id', function(req, res) {
     const promises = [];
     promises.push(Category.find({ handle: req.params.id }));
     promises.push(Post.find({ category: req.params.id }));
@@ -58,6 +58,32 @@ function categoryRoutes(server, app) {
       .catch(function(err) {
         res.status(400).send(err);
       })
+  })
+
+  server.put('/api/edit-category', function(req, res) {
+    Category.update({ _id: req.body.id }, { $set: req.body.data }, function (error, result) {
+      const promises = [];
+      Category.find({ _id: req.body.id })
+        .then(function(result) {
+          return result[0];
+        })
+        .then(function(result) {
+          Post.find({ category: result.handle })
+            .then(function (postsInCategory) {
+              const category = result;
+              const { _id, handle, title } = category;
+              res.send({
+                _id,
+                handle,
+                title,
+                posts: postsInCategory
+              });
+            })
+            .catch(function (err) {
+              res.status(400).send(err);
+            })
+        })
+    });
   })
 
 }
