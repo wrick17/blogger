@@ -21,6 +21,7 @@
     "next": "^5.0.0",
     "nodemon": "^1.17.1",
     "react": "^16.2.0",
+    "react-cookies": "^0.1.0",
     "react-dom": "^16.2.0",
     "react-no-ssr": "^1.1.0",
     "react-router": "^4.2.0",

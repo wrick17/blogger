@@ -1,14 +1,20 @@
 import { Redirect } from 'react-router-dom'
-import { fakeAuth } from './components/utils'
+import { authManager } from './components/utils'
 
 class Login extends React.Component {
   state = {
-    redirectToReferrer: false
+    redirectToReferrer: false,
+    username: 'admin',
+    password: 'password'
   }
 
   login = e => {
     e.preventDefault();
-    fakeAuth.authenticate(() => {
+    const { username, password } = this.state;
+    authManager.authenticate({
+      username,
+      password
+    }, () => {
       this.setState({
         redirectToReferrer: true
       })
@@ -30,11 +36,11 @@ class Login extends React.Component {
             <h2 className="mdl-card__title-text">Login</h2>
           </div>
           <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input className="mdl-textfield__input" type="text" id="username" value="admin" onChange={()=>{}} />
+            <input className="mdl-textfield__input" type="text" id="username" value={this.state.username} onChange={e => this.setState({ username: e.target.value }) } />
             <label className="mdl-textfield__label" htmlFor="username">Username</label>
           </div>
           <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input className="mdl-textfield__input" type="password" id="password" value="password" onChange={()=>{}} />
+            <input className="mdl-textfield__input" type="password" id="password" value={this.state.password} onChange={e => this.setState({ password: e.target.value }) } />
             <label className="mdl-textfield__label" htmlFor="password">Password</label>
           </div>
           <button type="submit" className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Login</button>
@@ -47,7 +53,7 @@ class Login extends React.Component {
             padding: 20px;
           }
           .login-page {
-            padding-top: 20%;
+            padding-top: 20vh;
           }
         `}</style>
       </div>

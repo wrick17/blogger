@@ -18,7 +18,16 @@ const postSchema = new Schema({
 
 const Post = mongoose.model('Post', postSchema);
 
+const authSchema = new Schema({
+  username: { type: String, unique: true, required: true },
+  password: { type: String, required: true },
+  token: { type: String, unique: true }
+})
+
+const Auth = mongoose.model('Auth', authSchema);
+
 module.exports = {
   Post,
-  Category
+  Category,
+  Auth
 };
