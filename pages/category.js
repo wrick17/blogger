@@ -1,27 +1,11 @@
 import fetch from 'isomorphic-unfetch'
-import Link from 'next/link'
+import Layout from './app/layout'
+import CategoryComponent from '../components/category/category_component'
 
 const Category = (props) => (
-  <div>
-    <h1>{props.category.title}</h1>
-    <ul>
-      {
-        props.category.posts.map(post => (
-          <li key={post._id}>
-            <Link as={`/${props.category.handle}/${post.handle}`} href={`/post?id=${post.handle}`}>
-              <a>{post.title}</a>
-            </Link>
-          </li>
-        ))
-      }
-    </ul>
-
-    <style jsx>{`
-      h1, a, p {
-        font-family: "Arial";
-      }
-    `}</style>
-  </div>
+  <Layout>
+    <CategoryComponent {...props} />
+  </Layout>
 )
 
 Category.getInitialProps = async function (context) {

@@ -14,6 +14,15 @@ const postSchema = new Schema({
   handle: { type: String, unique: true, required: true },
   title: { type: String, required: true },
   category: { type: String, required: true, enum: Object.keys(categories) },
+  description: { type: String },
+  imageLink: { type: String },
+  draft: {
+    handle: { type: String, unique: true, required: true },
+    title: { type: String, required: true },
+    category: { type: String, required: true, enum: Object.keys(categories) },
+    description: { type: String },
+    imageLink: { type: String },
+  }
 })
 
 const Post = mongoose.model('Post', postSchema);

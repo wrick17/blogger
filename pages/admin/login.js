@@ -10,6 +10,7 @@ class Login extends React.Component {
 
   login = e => {
     e.preventDefault();
+    console.log('i am here')
     const { username, password } = this.state;
     authManager.authenticate({
       username,
@@ -22,7 +23,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const { from } = this.props.location.state || { from: { pathname: '/preview' } }
+    const { from } = this.props.location.state || { from: { pathname: '/' } }
     const { redirectToReferrer } = this.state
 
     if (redirectToReferrer === true) {

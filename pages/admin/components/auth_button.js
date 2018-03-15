@@ -1,8 +1,9 @@
-import { withRouter, Redirect } from 'react-router-dom';
+import { withRouter, Redirect, Link } from 'react-router-dom';
 import cookie from 'react-cookies';
 import { authManager } from './utils';
 
 function logout(history) {
+  cookie.remove('token', { path: '/admin' });
   authManager.signout(() => {
     history.push('/login');
   })
@@ -10,9 +11,9 @@ function logout(history) {
 
 const AuthButton = withRouter(({ history }) => (
   cookie.load('token') ? (
-    history.location.pathname === '/login' ? <Redirect to="/preview" /> : <p>You are logged in <button onClick={() => logout(history)}>Logout</button></p>
+    history.location.pathname === '/login' ? <Redirect to="/" /> : <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onClick={() => logout(history)}>Logout</button>
   ) : (
-    history.location.pathname !== '/login' ? <Redirect to="/login" /> : <p>You are logged out</p>
+    history.location.pathname !== '/login' ? <Redirect to="/login" /> : <p />
   )
 ))
 

@@ -13,14 +13,23 @@ function makeid() {
 function authRoutes(server, app) {
 
   Auth.find(function(err, users) {
-    if (!users.length) {
-      const user = new Auth({
+    if (users.length < 2) {
+      const admin = new Auth({
         username: 'admin',
         password: 'password'
       });
-      user.save(function(err, result) {
+      admin.save(function(err, result) {
         if (err) console.error(err);
         else console.log('default user created successfully');
+      })
+
+      const postman = new Auth({
+        username: 'postman',
+        password: 'password'
+      });
+      postman.save(function (err, result) {
+        if (err) console.error(err);
+        else console.log('admin user created successfully');
       })
     }
   })
@@ -55,6 +64,7 @@ function authRoutes(server, app) {
       })
       const user = result[0];
       Auth.update({ _id: user._id }, { $unset: { token } }, function (error) {
+        console.log(error, user)
         if (error || !result.length) res.status(401).send({
           success: false,
         })

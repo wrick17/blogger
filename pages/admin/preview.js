@@ -1,7 +1,9 @@
+import Layout from './components/layout'
+
 const Preview = () => (
-  <div>
-    <p>Preview page</p>
-  </div>
+  <Layout>
+    <h2>Preview page</h2>
+  </Layout>
 )
 
 export default Preview

@@ -1,7 +1,9 @@
+import Layout from './components/layout'
+
 const Edit = () => (
-  <div>
+  <Layout>
     <p>Edit page</p>
-  </div>
+  </Layout>
 )
 
 export default Edit

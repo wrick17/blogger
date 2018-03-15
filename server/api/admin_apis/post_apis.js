@@ -38,7 +38,30 @@ function postApis(server, app) {
   })
 
   router.put('/edit-post', (req, res) => {
-    Post.update({ _id: req.body.id }, { $set: req.body.data }, function (error) {
+    Post.update({ _id: req.body.id }, { $set: { draft: req.body.data } }, function (error) {
+      Post.find({ _id: req.body.id }, function (err, posts) {
+        if (err) res.status(400).send(err);
+        res.status(202).send(posts[0]);
+      })
+    })
+  })
+
+  router.put('/publish-post', (req, res) => {
+    Post.find({ _id: req.body.id }, function(err, posts) {
+      const post = posts[0];
+      const draft = post.draft || {};
+      if (!post) return res.status(400).send(err);
+      Post.update({ _id: req.body.id }, { $set: draft, $unset: { draft: 1 } }, function (error) {
+        Post.find({ _id: req.body.id }, function (err, posts) {
+          if (err) res.status(400).send(err);
+          res.status(202).send(posts[0]);
+        })
+      })  
+    })
+  })
+
+  router.put('/reset-post', (req, res) => {
+    Post.update({ _id: req.body.id }, { $unset: { draft: 1 } }, function (error) {
       Post.find({ _id: req.body.id }, function (err, posts) {
         if (err) res.status(400).send(err);
         res.status(202).send(posts[0]);

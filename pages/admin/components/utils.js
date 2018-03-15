@@ -1,3 +1,4 @@
+import { history } from 'react-router-dom';
 import cookie from 'react-cookies';
 
 export const authManager = {
@@ -8,7 +9,7 @@ export const authManager = {
     })
       .then(res => res.json())
       .then(user => {
-        cookie.save('token', user.token);
+        cookie.save('token', user.token, { path: '/admin' });
         cb();
       })
   },
@@ -16,19 +17,25 @@ export const authManager = {
     adminFetch('/api/logout', {
       method: 'POST'
     })
-      .then(() => {
-        cookie.remove('token');
-        cb();
-      })
   }
 }
 
 export const adminFetch = (url, config = {}) => {
-  console.log(cookie.load('token'));
   const fetchConfig = Object.assign({}, config, {
     headers: {
-      token: cookie.load('token')
+      token: cookie.load('token'),
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
     }
   });
-  return fetch(url, fetchConfig);
+  const promise = new Promise((resolve, reject) => {
+    fetch(url, fetchConfig)
+      .then(data => resolve(data))
+      .catch(err => {
+        cookie.remove('token', {path: '/admin'});
+        location.pathname = '/admin/login';
+        reject(err);
+      })
+  });
+  return promise;
 }

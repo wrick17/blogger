@@ -1,17 +1,14 @@
 import fetch from 'isomorphic-unfetch'
+import Layout from './app/layout'
+import PostComponent from '../components/post/post_component'
 
-const Post = (props) => (
-  <div>
-    <h1>{props.post.title}</h1>
-    <h2>{props.post.category}</h2>
-
-    <style jsx>{`
-      h1, a, p {
-        font-family: "Arial";
-      }
-    `}</style>
-  </div>
-)
+const Post = (props) => { 
+  return (
+    <Layout>
+      <PostComponent {...props} />
+    </Layout>
+  )
+}
 
 Post.getInitialProps = async function (context) {
   const { req, query } = context;
