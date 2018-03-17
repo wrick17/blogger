@@ -27,9 +27,11 @@ class Login extends React.Component {
     const { redirectToReferrer } = this.state
 
     if (redirectToReferrer === true) {
+      console.log('here');
       return <Redirect to={from} />
     }
 
+    console.log('final render');
     return (
       <div className="login-page">
         <form action="#" onSubmit={this.login} className="demo-card-wide mdl-card mdl-shadow--2dp login-form" >

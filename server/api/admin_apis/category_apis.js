@@ -15,26 +15,23 @@ function categoryApis(server, app) {
   Category.find(function (err, result) {
     if (err) console.error(err);
     if (result.length < Object.keys(categories).length) {
-      const promises = [];
-      for (const key in categories) {
-        if (categories.hasOwnProperty(key)) {
-          const title = categories[key];
-          const category = new Category({
-            handle: key,
-            title: title
-          });
-          promises.push(category.save());
+      const array = [];
+      for (const category in categories) {
+        if (categories.hasOwnProperty(category)) {
+          const categoryName = categories[category];
+          array.push({
+            handle: category,
+            title: categoryName,
+            description: '',
+            introduction: '',
+            imageLink: '',
+          })
         }
       }
-      Promise.all(promises)
-        .then(function (values) {
-          Category.find(function (err, result) {
-            console.log('loaded default values');
-          })
-        })
-        .catch(function (error) {
-          res.status(400).send(error);
-        })
+      Category.create(array, function(error) {
+        if (error) return console.log(error);
+        console.log('added all')
+      })
     }
   })
 
@@ -53,11 +50,15 @@ function categoryApis(server, app) {
       .then(function (values) {
         const category = values[0][0];
         const postsInCategory = values[1];
-        const { _id, handle, title } = category;
+        const { _id, handle, title, description, introduction, imageLink, draft } = category;
         res.send({
           _id,
           handle,
           title,
+          description,
+          introduction,
+          imageLink,
+          draft,
           posts: postsInCategory
         });
       })
@@ -67,7 +68,7 @@ function categoryApis(server, app) {
   })
 
   router.put('/edit-category', function (req, res) {
-    Category.update({ _id: req.body.id }, { $set: req.body.data }, function (error, result) {
+    Category.update({ _id: req.body.id }, { $set: { draft: req.body.data } }, function (error) {
       const promises = [];
       Category.find({ _id: req.body.id })
         .then(function (result) {
@@ -77,11 +78,79 @@ function categoryApis(server, app) {
           Post.find({ category: result.handle })
             .then(function (postsInCategory) {
               const category = result;
-              const { _id, handle, title } = category;
+              const { _id, handle, title, description, introduction, imageLink, draft } = category;
               res.send({
                 _id,
                 handle,
                 title,
+                description,
+                introduction,
+                imageLink,
+                draft,
+                posts: postsInCategory
+              });
+            })
+            .catch(function (err) {
+              res.status(400).send(err);
+            })
+        })
+    });
+  })
+
+  router.put('/publish-category', function (req, res) {
+    Category.find({ _id: req.body.id }, function(error, categoriesList) {
+      const category = categoriesList[0];
+      const draft = category.draft;
+      Category.update({ _id: req.body.id }, { $set: draft, $unset: { draft: 1 } }, function (error, result) {
+        const promises = [];
+        Category.find({ _id: req.body.id })
+          .then(function (result) {
+            return result[0];
+          })
+          .then(function (result) {
+            Post.find({ category: result.handle })
+              .then(function (postsInCategory) {
+                const category = result;
+                const { _id, handle, title, description, introduction, imageLink, draft } = category;
+                res.send({
+                  _id,
+                  handle,
+                  title,
+                  description,
+                  introduction,
+                  imageLink,
+                  draft,
+                  posts: postsInCategory
+                });
+              })
+              .catch(function (err) {
+                res.status(400).send(err);
+              })
+          })
+      });
+    })
+  })
+
+  router.put('/reset-category', function (req, res) {
+    Category.update({ _id: req.body.id }, { $unset: { draft: 1 } }, function (error, result) {
+      const promises = [];
+      Category.find({ _id: req.body.id })
+        .then(function (result) {
+          return result[0];
+        })
+        .then(function (result) {
+          Post.find({ category: result.handle })
+            .then(function (postsInCategory) {
+              const category = result;
+              const { _id, handle, title, description, introduction, imageLink, draft } = category;
+              res.send({
+                _id,
+                handle,
+                title,
+                description,
+                introduction,
+                imageLink,
+                draft,
                 posts: postsInCategory
               });
             })

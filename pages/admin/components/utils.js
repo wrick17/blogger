@@ -30,7 +30,14 @@ export const adminFetch = (url, config = {}) => {
   });
   const promise = new Promise((resolve, reject) => {
     fetch(url, fetchConfig)
-      .then(data => resolve(data))
+      .then(res => {
+        if (res.status === 403) {
+          cookie.remove('token', { path: '/admin' });
+          location.pathname = '/admin/login';
+          return reject(err);
+        }
+        resolve(res);
+      })
       .catch(err => {
         cookie.remove('token', {path: '/admin'});
         location.pathname = '/admin/login';

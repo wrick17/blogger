@@ -1,14 +1,15 @@
-import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link, Redirect, withRouter } from "react-router-dom";
 import NoSSR from 'react-no-ssr'
 
-import Preview from './admin/preview'
 import Edit from './admin/edit'
 import Login from './admin/login'
-import EditHome from './admin/edit_home'
 
 import PrivateRoute from './admin/components/private_route'
 import Loading from './admin/components/loading'
+
+import EditHome from './admin/edit_home'
 import EditPost from './admin/edit_post'
+import EditCategory from "./admin/edit_category";
 
 class Admin extends React.Component {
   render() {
@@ -20,12 +21,14 @@ class Admin extends React.Component {
         <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
         <script defer src="https://cdn.jsdelivr.net/npm/getmdl-select@2.0.1/getmdl-select.min.js"></script>
         <NoSSR onSSR={<Loading />}>
-          <Router basename='/admin'>
-            <React.Fragment>
-              <PrivateRoute path='/' exact component={EditHome} />
+          <Router basename="/admin">
+            <Switch>
+              <Route exact path='/login' component={Login} />
+              <PrivateRoute exact path='/' component={EditHome} />
               <PrivateRoute path='/:category/:post' component={EditPost} />
-              <Route path='/login' component={Login} />
-            </React.Fragment>
+              <PrivateRoute path='/:category' component={EditCategory} />
+              <Redirect to="/admin" />
+            </Switch>
           </Router>
         </NoSSR>
       </React.Fragment>

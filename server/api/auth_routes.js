@@ -20,7 +20,7 @@ function authRoutes(server, app) {
       });
       admin.save(function(err, result) {
         if (err) console.error(err);
-        else console.log('default user created successfully');
+        else console.log('admin created successfully');
       })
 
       const postman = new Auth({
@@ -29,7 +29,7 @@ function authRoutes(server, app) {
       });
       postman.save(function (err, result) {
         if (err) console.error(err);
-        else console.log('admin user created successfully');
+        else console.log('postman user created successfully');
       })
     }
   })

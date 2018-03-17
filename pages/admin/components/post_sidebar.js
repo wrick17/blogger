@@ -1,24 +1,31 @@
-import { categories } from '../../../constants'
+import { adminFetch } from './utils';
 
 class PostSideBar extends React.Component {
+
+  state = {
+    categories: []
+  }
 
   handleChange = (field, value) => {
     if (this.props.onChange) this.props.onChange(field, value);
   }
 
-  generateListItems = (selectedCategory) => {
+  componentWillMount = () => {
+    adminFetch('/api/admin/categories')
+      .then(res => res.json())
+      .then(categories => this.setState({ categories }))
+      .catch(err => console.error(err))
+  }
+
+  generateListItems = (selectedCategory, categories) => {
     const categoriesList = [];
-    for (const category in categories) {
-      if (categories.hasOwnProperty(category)) {
-        const categoryTitle = categories[category];
-        if ((category === selectedCategory)) {
-          categoriesList.push(<li className="mdl-menu__item" onClick={() => this.handleChange('category', category)} data-selected="true" key={category} data-val={category}>{categoryTitle}</li>)
-        } else {
-          categoriesList.push(<li className="mdl-menu__item" onClick={() => this.handleChange('category', category)} key={category} data-val={category}>{categoryTitle}</li>)
-        }
+    return categories.map(category => {
+      if ((category.handle === selectedCategory)) {
+        return <li className="mdl-menu__item" onClick={() => this.handleChange('category', category.handle)} data-selected="true" key={category.handle} data-val={category.handle}>{category.title}</li>
+      } else {
+        return <li className="mdl-menu__item" onClick={() => this.handleChange('category', category.handle)} key={category.handle} data-val={category.handle}>{category.title}</li>
       }
-    }
-    return categoriesList;
+    })
   }
 
   render() {
@@ -44,12 +51,12 @@ class PostSideBar extends React.Component {
           </div>
           
           <div className="mdl-textfield mdl-js-textfield getmdl-select">
-            <input type="text" value={categories[this.props.post.category]} className="mdl-textfield__input" id="sidebar-post-category" readOnly />
-            <input type="hidden" value={categories[this.props.post.category]} name="sidebar-post-category" />
+            <input type="text" value={this.state.categories[this.props.post.category]} className="mdl-textfield__input" id="sidebar-post-category" readOnly />
+            <input type="hidden" value={this.state.categories[this.props.post.category]} name="sidebar-post-category" />
             <i className="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
             <label htmlFor="sidebar-post-category" className="mdl-textfield__label category-label">Category</label>
             <ul htmlFor="sidebar-post-category" className="mdl-menu mdl-menu--bottom-left mdl-js-menu">
-              { this.generateListItems(this.props.post.category) }
+              { this.generateListItems(this.props.post.category, this.state.categories) }
             </ul>
           </div>
 

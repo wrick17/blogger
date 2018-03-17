@@ -5,7 +5,7 @@ import Layout from './app/layout'
 
 const Index = (props) => (
   <Layout>
-    <HomePage {...props} />
+    <HomePage {...props} categories={props.categories} />
   </Layout>
 )
 

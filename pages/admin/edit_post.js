@@ -15,10 +15,11 @@ class EditPost extends React.Component {
 
   fillState = (post) => {
     let statePost = post;
+    if (post.hasOwnProperty('draft') && !Object.keys(post.draft).length) delete statePost.draft;
     if (post.hasOwnProperty('draft')) {
       statePost = Object.assign({}, post, post.draft);
     }
-    this.setState({ post, unsaved: false });
+    this.setState({ post: statePost, unsaved: false });
   }
 
   componentWillMount() {

@@ -47,14 +47,14 @@ function postApis(server, app) {
   })
 
   router.put('/publish-post', (req, res) => {
-    Post.find({ _id: req.body.id }, function(err, posts) {
+    Post.find({ _id: req.body.id }, function(error, posts) {
       const post = posts[0];
       const draft = post.draft || {};
-      if (!post) return res.status(400).send(err);
+      if (!post) return res.status(400).send(error);
       Post.update({ _id: req.body.id }, { $set: draft, $unset: { draft: 1 } }, function (error) {
-        Post.find({ _id: req.body.id }, function (err, posts) {
+        Post.find({ _id: req.body.id }, function (err, results) {
           if (err) res.status(400).send(err);
-          res.status(202).send(posts[0]);
+          res.status(202).send(results[0]);
         })
       })  
     })

@@ -17,14 +17,16 @@ class CategoryComponent extends React.Component {
     if (!(props.category && props.category.handle)) return null;
 
     const styleString = stylesMap[props.category.handle];
+    const adminUrl = props.admin ? '/admin/edit' : '';
     return (
-      <div>
+      <div className="category">
         <h1>{props.category.title}</h1>
+        <h3>{props.category.introduction}</h3>
         <ul>
           {
             (props.category.posts || []).map(post => (
               <li key={post._id}>
-                <Link as={`/${props.category.handle}/${post.handle}`} href={`/post?id=${post.handle}`}>
+                <Link as={`${adminUrl}/${props.category.handle}/${post.handle}`} href={`/post?id=${post.handle}`}>
                   <a>{post.title}</a>
                 </Link>
               </li>
@@ -32,6 +34,15 @@ class CategoryComponent extends React.Component {
           }
         </ul>
         <style jsx>{styleString}</style>
+        <style jsx>{`
+          .category {
+            text-align: center;
+          }
+          ul {
+            list-style: none;
+            padding-left: 0;
+          }
+        `}</style>
       </div>
     )
   }

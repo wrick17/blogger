@@ -9,12 +9,14 @@ function logout(history) {
   })
 }
 
-const AuthButton = withRouter(({ history }) => (
-  cookie.load('token') ? (
-    history.location.pathname === '/login' ? <Redirect to="/" /> : <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onClick={() => logout(history)}>Logout</button>
-  ) : (
-    history.location.pathname !== '/login' ? <Redirect to="/login" /> : <p />
+const AuthButton = withRouter(({ history }) => {
+  return (
+    cookie.load('token') ? (
+      history.location.pathname === '/login' ? <Redirect to="/" /> : <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onClick={() => logout(history)}>Logout</button>
+    ) : (
+      history.location.pathname !== '/login' ? <Redirect to="/login" /> : <p />
+    )
   )
-))
+})
 
 export default AuthButton;
