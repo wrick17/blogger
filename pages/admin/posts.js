@@ -9,7 +9,6 @@ class Posts extends React.Component {
   }
 
   componentDidMount() {
-    console.log('posts mount');
     adminFetch('/api/admin/posts')
       .then(res => res.json())
       .then(posts => this.setState({ posts }))

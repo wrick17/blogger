@@ -9,7 +9,6 @@ class Categories extends React.Component {
   }
 
   componentDidMount() {
-    console.log('categories mount');
     adminFetch('/api/admin/categories')
       .then(res => res.json())
       .then(categories => this.setState({ categories }))
