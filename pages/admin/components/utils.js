@@ -22,7 +22,6 @@ export const authManager = {
 }
 
 export const adminFetch = (url, config = {}, response) => {
-  console.log('fetch ---> ', url)
   const fetchConfig = Object.assign({}, config, {
     headers: {
       'Accept': 'application/json',
