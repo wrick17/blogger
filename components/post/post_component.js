@@ -16,7 +16,7 @@ class PostComponent extends React.Component {
 
     const styleString = stylesMap[props.post.category];
     return (
-      <div className="post">
+      <div className="post remove-material">
         <h1>{props.post.title}</h1>
         <h3>{props.post.category}</h3>
         <style jsx>{styleString}</style>

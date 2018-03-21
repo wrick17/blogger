@@ -40,10 +40,10 @@ function authRoutes(server, app) {
         const user = result[0];
         const token = makeid();
         Auth.update({ _id: user._id }, { $set: { token } }, function(error) {
-          if (error) res.status(401).send({
+          if (error) return res.status(401).send({
             success: false,
           })
-          res.status(201).send({
+          res.cookie('token', token, { path: '/', httpOnly: false }).status(201).send({
             username: user.username,
             token
           })

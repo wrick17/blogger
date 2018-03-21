@@ -1,8 +1,7 @@
 import Layout from './components/layout'
 import CategoryComponent from '../../components/category/category_component'
 import CategorySideBar from './components/category_sidebar'
-import ActionButton from './components/action_button'
-import cookie from 'react-cookies'
+import Router from 'next/router'
 
 import { adminFetch } from './components/utils'
 
@@ -11,6 +10,21 @@ class EditCategory extends React.Component {
   state = {
     category: null,
     unsaved: false
+  }
+
+  componentDidMount() {
+    const { id } = this.props.url.query;
+
+    adminFetch(`/api/admin/category/${id}`)
+      .then(res => res.json())
+      .then(this.fillState)
+      .catch(err => Router.push('/admin/login'))
+  }
+
+  isSavable = (category) => {
+    if (!category) return false;
+    const requiredFields = ['handle', 'title'];
+    return !requiredFields.filter(field => !category[field]).length;
   }
 
   fillState = (category) => {
@@ -22,23 +36,11 @@ class EditCategory extends React.Component {
     this.setState({ category: stateCategory, unsaved: false });
   }
 
-  componentWillMount() {
-    const pathnameArr = (this.props.location.pathname).split('/');
-    const categoryId = pathnameArr[pathnameArr.length - 1];
-
-    adminFetch(`/api/admin/category/${categoryId}`)
-      .then(res => res.json())
-      .then(this.fillState)
-      .catch(err => {
-        location.pathname = '/admin'
-      });
-  }
-
   onChange = (field, value) => {
     const category = Object.assign({}, this.state.category, {
       [field]: value
     });
-    this.setState({ category, unsaved: true });
+    this.setState({ category, unsaved: this.isSavable(category) });
   }
 
   saveCategory = () => {
@@ -94,12 +96,11 @@ class EditCategory extends React.Component {
           onReset={this.resetCategory}
           onPublish={this.publishCategory}
           onChange={this.onChange} />
-        <main className="mdl-layout__content some-gap">
-          <div className="page-content some-shadow">
+        <main className="mdl-layout__content">
+          <div className="page-content">
             <CategoryComponent category={this.state.category} admin={true} />
           </div>
         </main>
-        {/* <ActionButton /> */}
       </Layout>
     )
   }

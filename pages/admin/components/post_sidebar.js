@@ -1,4 +1,4 @@
-import { adminFetch } from './utils';
+import { adminFetch, handleize } from './utils';
 
 class PostSideBar extends React.Component {
 
@@ -7,7 +7,11 @@ class PostSideBar extends React.Component {
   }
 
   handleChange = (field, value) => {
-    if (this.props.onChange) this.props.onChange(field, value);
+    const obj = { [field]: value };
+    if (!this.props.post._id && field === 'title' && this.props.onChange) {
+      obj.handle = handleize(value);
+    }
+    if (this.props.onChange) this.props.onChange(obj);
   }
 
   componentWillMount = () => {
@@ -41,7 +45,7 @@ class PostSideBar extends React.Component {
           </div>
 
           <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label has-placeholder">
-            <input className="mdl-textfield__input" type="text" id="sidebar-post-handle" placeholder="Post handle" value={this.props.post.handle} onChange={e => this.handleChange('handle', e.target.value)} />
+            <input className="mdl-textfield__input" type="text" id="sidebar-post-handle" placeholder="Post handle" value={this.props.post.handle} disabled={this.props.post._id ? true : false} onChange={e => this.handleChange('handle', e.target.value)} />
             <label className="mdl-textfield__label" htmlFor="sidebar-post-handle">Handle</label>
           </div>
           

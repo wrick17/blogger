@@ -1,8 +1,7 @@
 import Layout from './components/layout'
 import PostComponent from '../../components/post/post_component'
 import PostSideBar from './components/post_sidebar'
-import ActionButton from './components/action_button'
-import cookie from 'react-cookies'
+import Router from 'next/router'
 
 import { adminFetch } from './components/utils'
 
@@ -11,6 +10,15 @@ class EditPost extends React.Component {
   state = {
     post: null,
     unsaved: false
+  }
+
+  componentDidMount() {
+    const { id, category } = this.props.url.query;
+
+    adminFetch(`/api/admin/post/${id}`)
+      .then(res => res.json())
+      .then(this.fillState)
+      .catch(err => Router.push('/admin/login'))
   }
 
   fillState = (post) => {
@@ -22,21 +30,8 @@ class EditPost extends React.Component {
     this.setState({ post: statePost, unsaved: false });
   }
 
-  componentWillMount() {
-    const pathnameArr = (this.props.location.pathname).split('/');
-    const postId = pathnameArr[pathnameArr.length - 1];
-    const categoryId = pathnameArr[pathnameArr.length - 2];
-
-    adminFetch(`/api/admin/post/${postId}`)
-      .then(res => res.json())
-      .then(this.fillState)
-      .catch(err => location.pathname = '/admin');
-  }
-
-  onChange = (field, value) => {
-    const post = Object.assign({}, this.state.post, {
-      [field]: value
-    });
+  onChange = (obj) => {
+    const post = Object.assign({}, this.state.post, obj);
     this.setState({ post, unsaved: true });
   }
 
@@ -97,7 +92,6 @@ class EditPost extends React.Component {
             <PostComponent post={this.state.post} />
           </div>
         </main>
-        {/* <ActionButton /> */}
       </Layout>
     )
   }

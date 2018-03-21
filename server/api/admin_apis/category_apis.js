@@ -43,13 +43,11 @@ function categoryApis(server, app) {
   })
 
   router.get('/category/:id', function (req, res) {
-    const promises = [];
-    promises.push(Category.find({ handle: req.params.id }));
-    promises.push(Post.find({ category: req.params.id }));
-    Promise.all(promises)
-      .then(function (values) {
-        const category = values[0][0];
-        const postsInCategory = values[1];
+
+    Category.find({ handle: req.params.id }, function(err, result) {
+      const category = result[0];
+      Post.find({ category: category.handle })
+      .then(function(posts) {
         const { _id, handle, title, description, introduction, imageLink, draft } = category;
         res.send({
           _id,
@@ -59,12 +57,16 @@ function categoryApis(server, app) {
           introduction,
           imageLink,
           draft,
-          posts: postsInCategory
+          posts: posts
         });
       })
-      .catch(function (err) {
-        res.status(400).send(err);
+      .catch(function (error) {
+        res.status(400).send(error);
       })
+    })
+    .catch(function (error) {
+      res.status(400).send(error);
+    })
   })
 
   router.put('/edit-category', function (req, res) {

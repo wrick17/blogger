@@ -19,7 +19,7 @@ class CategoryComponent extends React.Component {
     const styleString = stylesMap[props.category.handle];
     const adminUrl = props.admin ? '/admin/edit' : '';
     return (
-      <div className="category">
+      <div className="category remove-material">
         <h1>{props.category.title}</h1>
         <h3>{props.category.introduction}</h3>
         <ul>

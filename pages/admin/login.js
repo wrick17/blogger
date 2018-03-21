@@ -1,9 +1,9 @@
-import { Redirect } from 'react-router-dom'
+import Router from 'next/router'
 import { authManager } from './components/utils'
+import AdminStyles from '../admin/components/admin_styles';
 
 class Login extends React.Component {
   state = {
-    redirectToReferrer: false,
     username: 'admin',
     password: 'password'
   }
@@ -15,25 +15,13 @@ class Login extends React.Component {
     authManager.authenticate({
       username,
       password
-    }, () => {
-      this.setState({
-        redirectToReferrer: true
-      })
-    })
+    }, () => Router.push(this.props.url.query.redirect || '/admin/edit'))
   }
 
   render() {
-    const { from } = this.props.location.state || { from: { pathname: '/' } }
-    const { redirectToReferrer } = this.state
-
-    if (redirectToReferrer === true) {
-      console.log('here');
-      return <Redirect to={from} />
-    }
-
-    console.log('final render');
     return (
       <div className="login-page">
+        <AdminStyles />
         <form action="#" onSubmit={this.login} className="demo-card-wide mdl-card mdl-shadow--2dp login-form" >
           <div className="mdl-card__title">
             <h2 className="mdl-card__title-text">Login</h2>

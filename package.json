@@ -12,6 +12,7 @@
   "dependencies": {
     "babel-loader": "^7.1.4",
     "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
     "emit-file-loader": "^0.0.1",
     "express": "^4.16.2",
     "express-mongo-db": "^2.0.4",

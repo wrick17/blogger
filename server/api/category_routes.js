@@ -21,11 +21,15 @@ function categoryRoutes(server, app) {
       .then(function(values) {
         const category = values[0][0];
         const postsInCategory = values[1];
-        const { _id, handle, title } = category;
+        const { _id, handle, title, description, introduction, imageLink, draft } = category;
         res.send({
           _id,
           handle,
           title,
+          description,
+          introduction,
+          imageLink,
+          draft,
           posts: postsInCategory
         });
       })

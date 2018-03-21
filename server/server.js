@@ -6,6 +6,7 @@ const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 
 mongoose.connect('mongodb://localhost/blogger');
 
@@ -13,6 +14,7 @@ app.prepare()
 .then(() => {
   const server = express()
     server.use(bodyParser.json())
+    server.use(cookieParser())
   
     routes(server, app)
 

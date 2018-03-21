@@ -1,7 +1,7 @@
 const Header = (props) => (
   <React.Fragment>
     <header className="header" >
-      <h2>Blogger</h2>
+      <h2><a href="/">Blogger</a></h2>
     </header>
     <style jsx>{`
       .header {

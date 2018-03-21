@@ -17,7 +17,7 @@ class CategorySideBar extends React.Component {
           </div>
 
           <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label has-placeholder">
-            <input className="mdl-textfield__input" type="text" id="sidebar-category-handle" placeholder="Category Handle" value={this.props.category.handle} onChange={e => this.handleChange('handle', e.target.value)} />
+            <input className="mdl-textfield__input" type="text" id="sidebar-category-handle" placeholder="Category Handle" disabled value={this.props.category.handle} onChange={e => this.handleChange('handle', e.target.value)} />
             <label className="mdl-textfield__label" htmlFor="sidebar-category-handle">Handle</label>
           </div>
           
