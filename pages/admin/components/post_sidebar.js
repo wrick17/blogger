@@ -49,7 +49,7 @@ class PostSideBar extends React.Component {
             </div>
             <div className="button-group">
               <Button className="button button-gap" raised disabled={!(!this.props.unsaved && this.props.post.hasOwnProperty('draft'))} onClick={this.props.onPublish} >Publish</Button>
-              <Button className="button" raised onClick={this.props.onReset} disabled={!this.props.post.hasOwnProperty('draft')} >Reset</Button>
+              <Button className="button" raised onClick={this.props.onReset} disabled={!(this.props.unsaved || this.props.post.hasOwnProperty('draft'))} >Reset</Button>
             </div>
             <div className="spacer"></div>
             <TextField label="Title" value={this.props.post.title} onChange={e => this.handleChange('title', e.target.value)} />

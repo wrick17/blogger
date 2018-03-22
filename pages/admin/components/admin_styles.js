@@ -52,8 +52,12 @@ const AdminStyles = (props) => (
       }
       .page-content {
         flex: 1 0;
+        height: 100%;
         max-height: 100%;
         overflow: auto;
+        box-sizing: border-box;
+        padding: 20px;
+
       }
       .paddingmore.mdc-list .sidebar-image {
         margin-top: 0;
@@ -110,6 +114,9 @@ const AdminStyles = (props) => (
       .mdc-drawer--permanent.drawer {
         height: 100%;
         width: 300px;
+      }
+      .ql-snow .ql-tooltip {
+        left: 0 !important;
       }
     `}</style>
   </React.Fragment>

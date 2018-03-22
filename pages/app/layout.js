@@ -8,6 +8,7 @@ const Layout = (props) => (
     <style jsx global>{`
       body {
         font-family: "Arial";
+        margin: 0;
       }
     `}</style>
   </div>

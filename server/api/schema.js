@@ -26,12 +26,14 @@ const postSchema = new Schema({
   category: { type: String, required: true, enum: Object.keys(categories) },
   description: { type: String },
   imageLink: { type: String },
+  content: { type: Object },
   draft: {
     handle: { type: String, unique: true, sparse: true },
     title: { type: String },
     category: { type: String, enum: Object.keys(categories) },
     description: { type: String },
     imageLink: { type: String },
+    content: { type: Object },
   }
 })
 

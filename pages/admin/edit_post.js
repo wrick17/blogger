@@ -88,7 +88,7 @@ class EditPost extends React.Component {
           onPublish={this.publishPost}
           onChange={this.onChange} />
         <main className="page-content">
-          <PostComponent post={this.state.post} />
+          <PostComponent post={this.state.post} onChange={this.onChange} admin />
         </main>
       </Layout>
     )
