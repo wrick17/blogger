@@ -87,10 +87,8 @@ class EditPost extends React.Component {
           onReset={this.resetPost}
           onPublish={this.publishPost}
           onChange={this.onChange} />
-        <main className="mdl-layout__content some-gap">
-          <div className="page-content some-shadow">
-            <PostComponent post={this.state.post} />
-          </div>
+        <main className="page-content">
+          <PostComponent post={this.state.post} />
         </main>
       </Layout>
     )

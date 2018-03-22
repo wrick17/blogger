@@ -1,7 +1,6 @@
 const { Auth } = require('../api/schema');
 
 function authValidation(req, res, next) {
-  next();
   const token = req.cookies.token;
   if (req.originalUrl.startsWith('/admin/login')) {
     // if (token) return res.status(302).redirect('/admin/edit')

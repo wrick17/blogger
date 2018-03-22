@@ -59,16 +59,16 @@ function authRoutes(server, app) {
   server.post('/api/logout', (req, res) => {
     const token = req.get('token');
     Auth.find({ token }, function (err, result) {
-      if (!result.length) return res.status(401).send({
+      if (!result.length) return res.clearCookie('token').status(401).send({
         success: false,
       })
       const user = result[0];
       Auth.update({ _id: user._id }, { $unset: { token } }, function (error) {
         console.log(error, user)
-        if (error || !result.length) res.status(401).send({
+        if (error || !result.length) res.clearCookie('token').status(401).send({
           success: false,
         })
-        res.status(201).send({
+        res.clearCookie('token').status(201).send({
           success: true,
         })
       })

@@ -96,10 +96,8 @@ class EditCategory extends React.Component {
           onReset={this.resetCategory}
           onPublish={this.publishCategory}
           onChange={this.onChange} />
-        <main className="mdl-layout__content">
-          <div className="page-content">
-            <CategoryComponent category={this.state.category} admin={true} />
-          </div>
+        <main className="page-content">
+          <CategoryComponent category={this.state.category} admin={true} />
         </main>
       </Layout>
     )

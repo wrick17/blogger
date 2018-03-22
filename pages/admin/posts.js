@@ -2,6 +2,10 @@ import { adminFetch } from './components/utils'
 import Layout from './components/layout'
 import Link from 'next/link'
 
+import { Card, CardPrimaryAction, CardMedia, CardAction, CardActions, CardActionButtons } from 'rmwc/Card';
+import { Typography } from 'rmwc/Typography';
+import { Button } from 'rmwc/Button';
+
 class Posts extends React.Component {
 
   state = {
@@ -16,6 +20,23 @@ class Posts extends React.Component {
   }
 
   render() {
+    return (
+      <Layout>
+        <div className="container">
+          <h1 className="title">Posts</h1>
+          <ul className="list">
+            {
+              this.state.posts.map(post => (
+                <Card className="list-item">
+                  <Typography use="title" className="list-title" tag="h2">{post.title}</Typography>
+                  <Link as={`/admin/${post.category}/${post.handle}`} href={`/admin/edit_post?id=${post.handle}&category=${post.category}`} ><Button>Edit</Button></Link>
+                </Card>
+              ))
+            }
+          </ul>
+        </div>
+      </Layout>
+    )
     return (
       <Layout>
         <div className="container">

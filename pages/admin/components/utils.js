@@ -1,6 +1,6 @@
-import { history } from 'react-router-dom';
 import cookie from 'react-cookies';
 import fetch from 'isomorphic-unfetch';
+import Router from 'next/router'
 
 export const authManager = {
   authenticate: (creds, cb = ()=>{}) => {
@@ -18,6 +18,11 @@ export const authManager = {
     adminFetch('/api/logout', {
       method: 'POST'
     })
+      .then(res => res.json())
+      .then(user => {
+        Router.push('/admin/login')
+        cb();
+      })
   }
 }
 
